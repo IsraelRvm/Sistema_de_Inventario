@@ -1,0 +1,67 @@
+
+<script>
+    var listFact = [];
+  
+    function eliminarTodosLosProductos() {
+      listFact = []; // Asignar un arreglo vacío a la variable 'listFact'
+      actualizarHTML(); // Actualizar el contenido HTML
+    }
+  </script>
+<form id="facturar-form" action="registroFactura.php" method="post" target="_blank">
+    <input type="hidden" name="listFact" id="listFact-input" />
+    <button type="submit" class="btn btn-success mx-5 my-1">FACTURAR</button>
+    <button
+      class="btn btn-danger bi-trash" type="button"
+      onclick="eliminarTodosLosProductos()"
+    ></button>
+  </form>
+<div id="listFact-container"></div>
+
+
+<script>
+  function agregarProducto(nombreProducto,nombre, precio, cantidad) {
+    var nuevoProducto = {
+      nombreProducto:nombreProducto,
+      nombre: nombre,
+      precio: precio,
+      cantidad: cantidad,
+    };
+
+    listFact.push(nuevoProducto);
+    actualizarHTML();
+  }
+
+  function actualizarHTML() {
+    var container = document.getElementById("listFact-container");
+
+    container.innerHTML = "";
+
+    for (var i = 0; i < listFact.length; i++) {
+      var producto = listFact[i];
+      var listItem = document.createElement("li");
+      listItem.className =
+        "list-group-item d-flex justify-content-between align-items-start";
+
+      var div = document.createElement("div");
+      div.className = "ms-2 me-auto";
+      div.innerHTML =
+        "<div class='fw-bold'>" +
+          nombreProducto+" :"+producto.nombre +
+        "</div>" +
+        producto.precio;
+
+      var badge = document.createElement("span");
+      badge.className = "badge bg-primary rounded-pill";
+      badge.textContent = producto.cantidad;
+
+      listItem.appendChild(div);
+      listItem.appendChild(badge);
+
+      container.appendChild(listItem);
+    }
+
+    // Actualizar el valor del input hidden con el arreglo listFact
+    var listFactInput = document.getElementById("listFact-input");
+    listFactInput.value = JSON.stringify(listFact);
+  }
+</script>
